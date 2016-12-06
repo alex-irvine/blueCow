@@ -93,10 +93,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Distances.mdf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="App_Data\Distances_log.ldf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Distances.mdf</DependentUpon>
     </Content>
   </ItemGroup>
