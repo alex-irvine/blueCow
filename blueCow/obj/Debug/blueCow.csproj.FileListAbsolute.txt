@@ -1,0 +1,10 @@
+C:\Users\S14003221\Desktop\blueCow\blueCow\bin\Debug\blueCow.exe.config
+C:\Users\S14003221\Desktop\blueCow\blueCow\bin\Debug\App_Data\Distances.mdf
+C:\Users\S14003221\Desktop\blueCow\blueCow\bin\Debug\App_Data\Distances_log.ldf
+C:\Users\S14003221\Desktop\blueCow\blueCow\bin\Debug\blueCow.exe
+C:\Users\S14003221\Desktop\blueCow\blueCow\bin\Debug\blueCow.pdb
+C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.csprojResolveAssemblyReference.cache
+C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.Properties.Resources.resources
+C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.csproj.GenerateResource.Cache
+C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.exe
+C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.pdb
