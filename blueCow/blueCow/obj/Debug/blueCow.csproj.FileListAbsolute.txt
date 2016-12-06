@@ -8,3 +8,6 @@ C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.Properties.Resource
 C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.csproj.GenerateResource.Cache
 C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.exe
 C:\Users\S14003221\Desktop\blueCow\blueCow\obj\Debug\blueCow.pdb
+C:\Users\S16001733\Source\Repos\blueCow\blueCow\blueCow\bin\Debug\blueCow.exe.config
+C:\Users\S16001733\Source\Repos\blueCow\blueCow\blueCow\obj\Debug\blueCow.exe
+C:\Users\S16001733\Source\Repos\blueCow\blueCow\blueCow\obj\Debug\blueCow.pdb
