@@ -67,6 +67,25 @@ namespace blueCow.Lib
                     }
                 }
             }
+        }
+        
+        public int GetDistance(string cc1, string cc2)
+        {
+            using (SqlConnection conn = new SqlConnection(SysConfig.connString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("SELECT kmdist FROM Distances WHERE ida = '" + cc1 + "' AND idb = '" + cc2 + "'", conn))
+                {
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        if (rdr.Read())
+                        {
+                            return Convert.ToInt32(rdr["kmdist"]);
+                        }
+                        return 0;
+                    }
+                }
+            }
         } 
     }
 }
