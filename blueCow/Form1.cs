@@ -1,4 +1,6 @@
-﻿using System;
+﻿using blueCow.Lib;
+using blueCow.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +17,13 @@ namespace blueCow
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Individual ind = new Individual();
+            BidGenerator bg = new BidGenerator();
+            bg.GenerateBids();
         }
     }
 }
