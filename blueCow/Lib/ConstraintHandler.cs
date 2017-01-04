@@ -11,15 +11,15 @@ namespace blueCow.Lib
     {
         private DatabaseHelper _dbh;
         private int _illegalHopePenalty = 1000000;
-        private int _hopDistPenalty = 1000000;
-        private int _totalDistPenalty = 1000000;
+        private int _hopDistPenalty = 10;
+        private int _totalDistPenalty = 10;
 
         public ConstraintHandler()
         {
             _dbh = new DatabaseHelper();
         }
 
-        public int TotalDistancePenalty(int dist)
+        public long TotalDistancePenalty(long dist)
         {
             return dist < SysConfig.minTotalDist ? (SysConfig.minTotalDist - dist) * _totalDistPenalty :
                 (dist > SysConfig.maxTotalDist ? (dist - SysConfig.maxTotalDist) * _totalDistPenalty : 0);
@@ -42,7 +42,7 @@ namespace blueCow.Lib
                     illegal = true;
                 }
             }
-            return illegal ? _illegalHopePenalty : 1;
+            return illegal ? _illegalHopePenalty : 0;
         }
     }
 }

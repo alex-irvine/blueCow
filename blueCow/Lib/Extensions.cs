@@ -21,6 +21,11 @@ namespace blueCow.Lib
                 list[n] = value;
             }
         }
+
+        public static IList<T> Clone<T>(this IList<T> listToClone) where T : ICloneable
+        {
+            return listToClone.Select(item => (T)item.Clone()).ToList();
+        }
     }
 
     public static class ThreadSafeRandom
@@ -33,4 +38,6 @@ namespace blueCow.Lib
             get { return Local ?? (Local = new Random(unchecked(Environment.TickCount * 31 + Thread.CurrentThread.ManagedThreadId))); }
         }
     }
+
+
 }

@@ -8,6 +8,11 @@ namespace blueCow.Lib
 {
     public static class SysConfig
     {
+        /**
+         * Fun facts:
+         * Max kmdist = 19918 (Hop)
+         * Min kmdist = 13 (hop) (some are 0 for some reason? Different codes fo the same country maybe)
+         */
         public static readonly int chromeLength = 203;
         public static readonly string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\Dropbox\Glyndwr\optimisation\blueCow\blueCow\App_Data\Distances_vs2015.mdf;Integrated Security=True";
         //public static readonly string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\S14003221\Desktop\blueCow\blueCow\App_Data\Distances.mdf;Integrated Security=True";
@@ -27,5 +32,8 @@ namespace blueCow.Lib
             { "MOR", "NTH" },
             { "TOG", "CRO" }
         };
+        public static readonly double crossOverRate = 80;
+        public static readonly int mutationRate = 1;
+        public static readonly int tourPopSize = 20;
     }
 }
