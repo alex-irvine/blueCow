@@ -84,16 +84,26 @@ namespace blueCow.Lib
                 {
                     TravelOrder = _ga.CrossoverTravelOrder(parent1.TravelOrder, parent2.TravelOrder)
                 };
+                Tour child2 = new Tour()
+                {
+                    TravelOrder = _ga.CrossoverTravelOrder(parent2.TravelOrder, parent1.TravelOrder)
+                };
                 // should we mutate?
                 if (_rand.Next(1, 100) < SysConfig.mutationRate)
                 {
                     child1.TravelOrder = _ga.MutateTravelOrder(child1.TravelOrder);
+                    child2.TravelOrder = _ga.MutateTravelOrder(child2.TravelOrder);
                 }
                 // if child better than either parent add to new pop
                 child1.Violation = _ga.EvaluateTourViolation(_obj.TourViolation, child1.TravelOrder, dbh);
                 if (child1.Violation < parent1.Violation || child1.Violation < parent2.Violation)
                 {
                     newTours.Add(child1);
+                }
+                child2.Violation = _ga.EvaluateTourViolation(_obj.TourViolation, child2.TravelOrder, dbh);
+                if (child2.Violation < parent1.Violation || child2.Violation < parent2.Violation)
+                {
+                    newTours.Add(child2);
                 }
             }
             // replace tours

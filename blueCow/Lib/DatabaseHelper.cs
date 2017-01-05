@@ -4,6 +4,9 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using blueCow.Models;
+using System.Threading;
+using System.Windows.Forms;
 
 namespace blueCow.Lib
 {
@@ -11,6 +14,7 @@ namespace blueCow.Lib
     {
         private int[,] _distMatrix;
         private Dictionary<string, int> _countryCodeIndexes;
+        private Dictionary<string, int> _bids;
 
         public T GetData<T>(string command)
         {
@@ -54,22 +58,25 @@ namespace blueCow.Lib
 
         public Dictionary<string,int> GetBids()
         {
-            using (SqlConnection conn = new SqlConnection(SysConfig.connString))
+            if(_bids == null)
             {
-                conn.Open();
-                using (SqlCommand cmd = new SqlCommand("SELECT * FROM Bids", conn))
+                _bids = new Dictionary<string, int>();
+                using (SqlConnection conn = new SqlConnection(SysConfig.connString))
                 {
-                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT * FROM Bids", conn))
                     {
-                        Dictionary<string, int> bids = new Dictionary<string, int>();
-                        while (rdr.Read())
+                        using (SqlDataReader rdr = cmd.ExecuteReader())
                         {
-                            bids.Add(rdr["id"].ToString(),Convert.ToInt32(rdr["Bid"]));
+                            while (rdr.Read())
+                            {
+                                _bids.Add(rdr["id"].ToString(), Convert.ToInt32(rdr["Bid"]));
+                            }
                         }
-                        return bids;
                     }
                 }
             }
+            return _bids;
         }
         
         public int GetDistance(string cc1, string cc2)
@@ -91,12 +98,12 @@ namespace blueCow.Lib
             }
         } 
 
-        public int[,] GetDistanceMatrix()
+        public int[,] GetDistanceMatrix(ProgressBar progBar = null)
         {
             if(_distMatrix == null)
             {
                 Dictionary<string, int> countryCodeIndex = GetCountryCodeIndexes();
-                int[,] _distMatrix = new int[countryCodeIndex.Count, countryCodeIndex.Count];
+                _distMatrix = new int[countryCodeIndex.Count, countryCodeIndex.Count];
                 for (int i = 0; i < countryCodeIndex.Count; i++)
                 {
                     //for (int j = 0; j < countryCodeIndex.Count; j++)
@@ -108,25 +115,36 @@ namespace blueCow.Lib
                     //    }
                     //    _distMatrix[i, j] = GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(j));
                     //}
-                    Parallel.For(0, countryCodeIndex.Count,
-                        () => new long[1],
-                        (int j, ParallelLoopState state, long[] distance) => 
-                        {
-                            if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(j))
-                            {
-                                distance[0] = 0;
-                            }
-                            else
-                            {
-                                distance[0] = GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(j));
-                            }
-                            return distance;
-                        },
-                        
-                        (long[] distance) =>
-                        {
-                            lock (_distMatrix) { _distMatrix[i, j] = distance[0]; }
-                        });
+                    var numCores = Environment.ProcessorCount;
+                    var tasks = new Task[numCores];
+                    int j = -1;
+                    for (int taskNum = 0; taskNum < numCores; taskNum++)
+                    {
+                        tasks[taskNum] = Task.Factory.StartNew(
+                                () =>
+                                {
+                                    int k = Interlocked.Increment(ref j);
+                                    while (k < countryCodeIndex.Count)
+                                    {
+                                        if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(k))
+                                        {
+                                            _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] = 0;
+                                        }
+                                        else
+                                        {
+                                            _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] =
+                                                GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(k));
+                                        }
+                                        k = Interlocked.Increment(ref j);
+                                    }
+                                }
+                            );
+                    }
+                    Task.WaitAll(tasks);
+                    if(progBar != null)
+                    {
+                        progBar.Value = j*i;
+                    }
                 }
             }
             return _distMatrix;

@@ -28,6 +28,16 @@ namespace blueCow.Lib
             return _population;
         }
 
+        public List<Individual> GeneratePopulation(int popSize, DatabaseHelper dbh)
+        {
+            _population = new List<Individual>();
+            for (int i = 0; i < popSize; i++)
+            {
+                _population.Add(new Individual(_rand,dbh));
+            }
+            return _population;
+        }
+
         public List<Individual> GetPopulation()
         {
             return _population;
@@ -144,6 +154,11 @@ namespace blueCow.Lib
             }
             // get max
             long maxFitness = fitnesses.Max();
+            if(maxFitness == 0)
+            {
+                // nothing to optimise just return first ind
+                return tours[0];
+            }
             while (true)
             {
                 // randomly select a member

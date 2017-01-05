@@ -104,6 +104,7 @@
     <Compile Include="Lib\OptimisationController.cs" />
     <Compile Include="Lib\SysConfig.cs" />
     <Compile Include="Models\Individual.cs" />
+    <Compile Include="Models\InnerParallelLoopDataWrapper.cs" />
     <Compile Include="Models\Solution.cs" />
     <Compile Include="Models\Tour.cs" />
     <Compile Include="Program.cs" />

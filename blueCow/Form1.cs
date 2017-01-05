@@ -38,22 +38,6 @@ namespace blueCow
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            List<Individual> inds = _ga.GeneratePopulation(Convert.ToInt32(numericUpDown1.Value));
-            listBox2.Items.Clear();
-            Dictionary<string, int> bids = _dbh.GetBids();
-            foreach(var i in inds)
-            {
-                string cities = "";
-                foreach(var c in i.TravelOrder)
-                {
-                    cities += c +", ";
-                }
-                listBox2.Items.Add(cities);
-            }
-        }
-
         private void button3_Click(object sender, EventArgs e)
         {
             ObjectiveFunction obj = new ObjectiveFunction();
@@ -65,84 +49,13 @@ namespace blueCow
             }
         }
 
-        private void button4_Click(object sender, EventArgs e)
-        {
-            ObjectiveFunction obj = new ObjectiveFunction();
-            List<Individual> inds = _ga.EvaluateTourViolations(obj.TourViolation);
-            listBox4.Items.Clear();
-            foreach(var i in inds)
-            {
-                listBox4.Items.Add(i.TourViolation.ToString());
-            }
-        }
-
-        private void button5_Click(object sender, EventArgs e)
-        {
-            // show first individuals tours
-            listBox6.Items.Clear();
-            List<Tour> tours = _ga.GetPopulation()[0].TourPopulation;
-            foreach(var i in tours)
-            {
-                string cities = "";
-                foreach(var s in i.TravelOrder)
-                {
-                    cities += s + ", ";
-                }
-                listBox6.Items.Add(cities);
-            }
-            listBox5.Items.Clear();
-            Tour selectedTour = _ga.RouletteSelectTour(tours);
-            string selected = "";
-            foreach(var s in selectedTour.TravelOrder)
-            {
-                selected += s + ", ";
-            }
-            listBox5.Items.Add(selected);
-            listBox5.Items.Add(selectedTour.Violation);
-        }
-
-        private void button6_Click(object sender, EventArgs e)
-        {
-            backgroundWorker1.RunWorkerAsync();
-        }
-
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
-        {
-            var worker = (BackgroundWorker)sender;
-            // just do first ind
-            Individual ind = _ga.GetPopulation()[0];
-            for (int j = 0; j < numericUpDown2.Value; j++)
-            {
-                ind = _opt.OptimiseTour(ind, "tournament");
-                backgroundWorker1.ReportProgress((j+1 / Convert.ToInt32(numericUpDown2.Value))*100);
-            }
-        }
-
-        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            progressBar1.Value = e.ProgressPercentage;
-            listBox7.Items.Clear();
-            listBox6.Items.Clear();
-            List<Tour> tours = _ga.GetPopulation()[0].TourPopulation;
-            foreach (var i in tours)
-            {
-                string cities = "";
-                foreach (var s in i.TravelOrder)
-                {
-                    cities += s + ", ";
-                }
-                listBox6.Items.Add(cities);
-            }
-            foreach (var t in tours)
-            {
-                listBox7.Items.Add(t.Violation);
-            }
-        }
-
         private void button7_Click(object sender, EventArgs e)
         {
+            int numCities = _dbh.GetCountryCodeIndexes().Count;
+            progressBar3.Maximum = 41818;
+            progressBar3.Step = 1;
             listBox8.Items.Clear();
-            int[,] distMatrix = _dbh.GetDistanceMatrix();
+            int[,] distMatrix = _dbh.GetDistanceMatrix(progressBar3);
             for(int i = 0; i < distMatrix.GetLength(0); i++)
             {
                 string row = "";
@@ -156,6 +69,7 @@ namespace blueCow
 
         private void button8_Click(object sender, EventArgs e)
         {
+            SysConfig.selectionMethod = comboBox1.Text;
             backgroundWorker2.RunWorkerAsync();
         }
 
@@ -166,7 +80,7 @@ namespace blueCow
             Individual ind = _ga.GetPopulation()[0];
             for (int j = 0; j < numericUpDown3.Value; j++)
             {
-                ind = _opt.OptimiseTour(ind, "tournament",_dbh);
+                ind = _opt.OptimiseTour(ind, SysConfig.selectionMethod, _dbh);
                 backgroundWorker2.ReportProgress((j + 1 / Convert.ToInt32(numericUpDown3.Value)) * 100);
             }
         }
@@ -189,6 +103,25 @@ namespace blueCow
             foreach (var t in tours)
             {
                 listBox7.Items.Add(t.Violation);
+            }
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            SysConfig.tourPopSize = Convert.ToInt32(numericUpDown1.Value);
+            SysConfig.crossOverRate = Convert.ToInt32(numericUpDown2.Value);
+            SysConfig.mutationRate = Convert.ToInt32(numericUpDown5.Value);
+            List<Individual> inds = _ga.GeneratePopulation(Convert.ToInt32(numericUpDown4.Value), _dbh);
+            listBox2.Items.Clear();
+            Dictionary<string, int> bids = _dbh.GetBids();
+            foreach (var i in inds)
+            {
+                string cities = "";
+                foreach (var c in i.TravelOrder)
+                {
+                    cities += c + ", ";
+                }
+                listBox2.Items.Add(cities);
             }
         }
     }
