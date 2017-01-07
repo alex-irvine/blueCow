@@ -18,14 +18,9 @@ namespace blueCow.Lib
             _rand = new Random();
         }
 
-        public List<Individual> GeneratePopulation(int popSize)
+        public void SetPopulation(List<Individual> pop)
         {
-            _population = new List<Individual>();
-            for(int i = 0; i < popSize; i++)
-            {
-                _population.Add(new Individual(_rand));
-            }
-            return _population;
+            _population = pop;
         }
 
         public List<Individual> GeneratePopulation(int popSize, DatabaseHelper dbh)
@@ -43,11 +38,11 @@ namespace blueCow.Lib
             return _population;
         }
 
-        public List<Individual> EvaluatePopulation(Func<Individual, double> objectiveFunc)
+        public List<Individual> EvaluatePopulation(Func<Individual,DatabaseHelper,long> objectiveFunc,DatabaseHelper dbh)
         {
             foreach(var i in _population)
             {
-                i.ObjectiveValue = objectiveFunc(i);
+                i.ObjectiveValue = objectiveFunc(i, dbh);
             }
             return _population;
         }
@@ -202,16 +197,18 @@ namespace blueCow.Lib
 
         public Individual ReplaceWorstTours(Individual ind, List<Tour> newTours)
         {
-            int index = 0;
+            int index;
             long worstViolation;
             foreach(var t in newTours)
             {
+                index = 0;
                 worstViolation = ind.TourPopulation[0].Violation;
                 foreach (var i in ind.TourPopulation)
                 {
-                    if (i.Violation > worstViolation)
+                    if (i.Violation >= worstViolation)
                     {
                         index = ind.TourPopulation.IndexOf(i);
+                        worstViolation = i.Violation;
                     }
                 }
                 if(ind.TourPopulation[index].Violation > t.Violation)
@@ -220,6 +217,105 @@ namespace blueCow.Lib
                 }
             }
             return ind;
+        }
+
+        public bool[] CrossoverBids(bool[] parent1, bool[] parent2)
+        {
+            // just single point for now
+            int xOverPoint = _rand.Next(0, parent1.Length - 1);
+            bool[] child = new bool[parent1.Length];
+            for(int i = 0; i <= xOverPoint; i++)
+            {
+                child[i] = parent1[i];
+            }
+            for(int i = xOverPoint; i < parent2.Length; i++)
+            {
+                child[i] = parent2[i];
+            }
+            return child;
+        }
+
+        public bool[] MutateBids(bool[] bids)
+        {
+            int bitToFlip = _rand.Next(0, bids.Length - 1);
+            // flip and return
+            bids[bitToFlip] = !bids[bitToFlip];
+            return bids;
+        }
+
+        // stochastic acceptance
+        public Individual RouletteSelectBids(List<Individual> inds)
+        {
+            // get all fitnesses
+            long[] fitnesses = new long[inds.Count];
+            foreach (var i in inds)
+            {
+                fitnesses[inds.IndexOf(i)] = i.ObjectiveValue;
+            }
+            // get max
+            long maxFitness = fitnesses.Max();
+            while (true)
+            {
+                // randomly select a member
+                Individual ind = inds[_rand.Next(0, inds.Count - 1)];
+                double probability = (ind.ObjectiveValue / maxFitness);
+                if (_rand.Next(0, 100) / 100 <= probability)
+                {
+                    return ind;
+                }
+            }
+        }
+
+        public List<Individual> ReplaceWorstBids(List<Individual> origPop, List<Individual> newPop)
+        { 
+            foreach(var n in newPop)
+            {
+                int index = 0;
+                long worstObjective = origPop[0].ObjectiveValue;
+                foreach (var i in origPop)
+                {
+                    if (i.ObjectiveValue <= worstObjective)
+                    {
+                        worstObjective = i.ObjectiveValue;
+                        index = origPop.IndexOf(i);
+                    }
+                }
+                if (origPop[index].ObjectiveValue < n.ObjectiveValue)
+                {
+                    origPop[index] = n;
+                }
+            }
+            return origPop;
+        }
+
+        public Individual GetFittestIndividual(List<Individual> inds)
+        {
+            long obj = 0;
+            int index = 0;
+            foreach(var i in inds)
+            {
+                if(i.ObjectiveValue > obj)
+                {
+                    obj = i.ObjectiveValue;
+                    index = inds.IndexOf(i);
+                }
+            }
+            return inds[index];
+        }
+
+        public Individual GetFittestIndividual()
+        {
+            long obj = 0;
+            int index = 0;
+            foreach (var i in _population)
+            {
+                if (i.ObjectiveValue > obj)
+                {
+                    obj = i.ObjectiveValue;
+                    index = _population.IndexOf(i);
+                }
+            }
+            return _population[index];
         }
     }
 }

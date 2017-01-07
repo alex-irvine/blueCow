@@ -1,0 +1,1 @@
+﻿select * from continents where cc = 'OC'

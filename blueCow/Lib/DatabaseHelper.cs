@@ -15,6 +15,8 @@ namespace blueCow.Lib
         private int[,] _distMatrix;
         private Dictionary<string, int> _countryCodeIndexes;
         private Dictionary<string, int> _bids;
+        private Dictionary<List<string>, int> _distanceLookup;
+        private Dictionary<string, string> _continentLookup;
 
         public T GetData<T>(string command)
         {
@@ -106,45 +108,49 @@ namespace blueCow.Lib
                 _distMatrix = new int[countryCodeIndex.Count, countryCodeIndex.Count];
                 for (int i = 0; i < countryCodeIndex.Count; i++)
                 {
-                    //for (int j = 0; j < countryCodeIndex.Count; j++)
+                    for (int j = 0; j < countryCodeIndex.Count; j++)
+                    {
+                        if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(j))
+                        {
+                            _distMatrix[i, j] = 0;
+                            continue;
+                        }
+                        _distMatrix[i, j] = GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(j),true);
+                    }
+                    if (progBar != null)
+                    {
+                        progBar.Value = 203 * i + 1;
+                    }
+                    //var numCores = Environment.ProcessorCount;
+                    //var tasks = new Task[numCores];
+                    //int j = -1;
+                    //for (int taskNum = 0; taskNum < numCores; taskNum++)
                     //{
-                    //    if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(j))
-                    //    {
-                    //        _distMatrix[i, j] = 0;
-                    //        continue;
-                    //    }
-                    //    _distMatrix[i, j] = GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(j));
+                    //    tasks[taskNum] = Task.Factory.StartNew(
+                    //            () =>
+                    //            {
+                    //                int k = Interlocked.Increment(ref j);
+                    //                while (k < countryCodeIndex.Count)
+                    //                {
+                    //                    if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(k))
+                    //                    {
+                    //                        _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] = 0;
+                    //                    }
+                    //                    else
+                    //                    {
+                    //                        _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] =
+                    //                            GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(k),true);
+                    //                    }
+                    //                    k = Interlocked.Increment(ref j);
+                    //                }
+                    //            }
+                    //        );
                     //}
-                    var numCores = Environment.ProcessorCount;
-                    var tasks = new Task[numCores];
-                    int j = -1;
-                    for (int taskNum = 0; taskNum < numCores; taskNum++)
-                    {
-                        tasks[taskNum] = Task.Factory.StartNew(
-                                () =>
-                                {
-                                    int k = Interlocked.Increment(ref j);
-                                    while (k < countryCodeIndex.Count)
-                                    {
-                                        if (countryCodeIndex.Keys.ElementAt(i) == countryCodeIndex.Keys.ElementAt(k))
-                                        {
-                                            _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] = 0;
-                                        }
-                                        else
-                                        {
-                                            _distMatrix[i, countryCodeIndex.Values.ElementAt(k)] =
-                                                GetDistance(countryCodeIndex.Keys.ElementAt(i), countryCodeIndex.Keys.ElementAt(k));
-                                        }
-                                        k = Interlocked.Increment(ref j);
-                                    }
-                                }
-                            );
-                    }
-                    Task.WaitAll(tasks);
-                    if(progBar != null)
-                    {
-                        progBar.Value = j*i;
-                    }
+                    //Task.WaitAll(tasks);
+                    //if (progBar != null)
+                    //{
+                    //    progBar.Value = j*i;
+                    //}
                 }
             }
             return _distMatrix;
@@ -180,6 +186,103 @@ namespace blueCow.Lib
             var distMatrix = GetDistanceMatrix();
             var countrCodeIndexes = GetCountryCodeIndexes();
             return distMatrix[_countryCodeIndexes[cc1],countrCodeIndexes[cc2]];
+        }
+
+        public int GetDistance(string cc1, string cc2, bool notSlow)
+        {
+            if(_distanceLookup == null)
+            {
+                _distanceLookup = new Dictionary<List<string>, int>();
+                using (SqlConnection conn = new SqlConnection(SysConfig.connString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT ida,idb,kmdist FROM Distances", conn))
+                    {
+                        using (SqlDataReader rdr = cmd.ExecuteReader())
+                        {
+                            while (rdr.Read())
+                            {
+                                _distanceLookup.Add
+                                    (new List<string>() { rdr["ida"].ToString(), rdr["idb"].ToString() }, Convert.ToInt32(rdr["kmdist"]));
+                            }
+                        }
+                    }
+                }
+            }
+            foreach(var kvp in _distanceLookup)
+            {
+                if(kvp.Key[0] == cc1 && kvp.Key[1] == cc2)
+                {
+                    return kvp.Value;
+                }
+            }
+            throw new KeyNotFoundException(string.Format("There is no matching combination of keys for {0}, {1} in the dictionary", cc1, cc2));
+        }
+
+        public Dictionary<string, string> GetContinentCodes()
+        {
+            if (_continentLookup == null)
+            {
+                _continentLookup = new Dictionary<string, string>();
+                using (SqlConnection conn = new SqlConnection(SysConfig.connString))
+                {
+                    conn.Open();
+                    using (SqlCommand cmd = new SqlCommand("SELECT a_3,cc FROM continents", conn))
+                    {
+                        using (SqlDataReader rdr = cmd.ExecuteReader())
+                        {
+                            while (rdr.Read())
+                            {
+                                if (_continentLookup.ContainsKey(rdr["a_3"].ToString()))
+                                {
+                                    _continentLookup.Add
+                                    (rdr["a_3"].ToString()+"_D", rdr["cc"].ToString());
+                                }
+                                else
+                                {
+                                    _continentLookup.Add
+                                    (rdr["a_3"].ToString(), rdr["cc"].ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return _continentLookup;
+        }
+
+        public string GetContinentCode(string countryCode)
+        {
+            var codes = GetContinentCodes();
+            return codes[countryCode];
+        }
+
+        public void SortOutTheGoddamMissingCountryCodesRandomly(Random rand)
+        {
+            Dictionary<string, string> countries = new Dictionary<string, string>();
+            using (SqlConnection conn = new SqlConnection(SysConfig.connString))
+            {
+                conn.Open();
+                using (SqlCommand cmd = new SqlCommand("Select * from continents where cc IS NULL", conn))
+                {
+                    using (SqlDataReader rdr = cmd.ExecuteReader())
+                    {
+                        while (rdr.Read())
+                        {
+                            countries.Add(rdr["a_3"].ToString(), "");
+                        }
+                    }
+                }
+                foreach(var kvp in countries)
+                {
+                    // randomly select a continent
+                    string cont = SysConfig.majorContinents[rand.Next(0, SysConfig.majorContinents.Count)];
+                    using (SqlCommand cmd = new SqlCommand("UPDATE continents SET cc = '" + cont + "' WHERE a_3 = '" + kvp.Key + "'", conn))
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+            }
         }
     }
 }

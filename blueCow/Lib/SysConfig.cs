@@ -16,11 +16,11 @@ namespace blueCow.Lib
         public static int chromeLength = 203; // the number of cities
         public static string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\Dropbox\Glyndwr\optimisation\blueCow\blueCow\App_Data\Distances_vs2015.mdf;Integrated Security=True";
         //public static readonly string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\S14003221\Desktop\blueCow\blueCow\App_Data\Distances.mdf;Integrated Security=True";
-        public static int minBid = 500000;
-        public static int maxBid = 5000000;
+        public static int minBid = 100000;
+        public static int maxBid = 10000000;
         public static int minCities = 30;
         public static int maxCities = 50;
-        public static int maxTotalDist = 400000;
+        public static int maxTotalDist = 300000;
         public static int minTotalDist = 100000;
         public static int maxHopDist = 10000;
         public static int minHopDist = 1000;
@@ -36,5 +36,16 @@ namespace blueCow.Lib
         public static int mutationRate = 5;
         public static int tourPopSize = 50;
         public static string selectionMethod = "roulette";
+        public static List<string> majorContinents = new List<string>()
+        {
+            "AS",
+            "EU",
+            "AF",
+            "OC",
+            "NA",
+            "SA"
+        };
+        public static int minCountriesPerContinent = 3;
+        public static int maxTourGenerations = 100;
     }
 }

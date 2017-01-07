@@ -9,14 +9,13 @@ namespace blueCow.Lib
 {
     class ConstraintHandler
     {
-        private DatabaseHelper _dbh;
-        private int _illegalHopePenalty = 1000000;
-        private int _hopDistPenalty = 10;
-        private int _totalDistPenalty = 10;
+        private int _illegalHopePenalty = 100000000;
+        private int _hopDistPenalty = 10000;
+        private int _totalDistPenalty = 10000;
+        private int _continentPenalty = 100000000;
 
         public ConstraintHandler()
         {
-            _dbh = new DatabaseHelper();
         }
 
         public long TotalDistancePenalty(long dist)
@@ -25,13 +24,13 @@ namespace blueCow.Lib
                 (dist > SysConfig.maxTotalDist ? (dist - SysConfig.maxTotalDist) * _totalDistPenalty : 0);
         }
 
-        public int HopDistPenalty(int dist)
+        public long HopDistPenalty(long dist)
         {
             return dist < SysConfig.minHopDist ? (SysConfig.minHopDist - dist) * _hopDistPenalty :
                 (dist > SysConfig.maxHopDist ? (dist - SysConfig.maxHopDist) * _hopDistPenalty : 0);
         }
 
-        public int IllegalHopPenalty(string start, string end)
+        public long IllegalHopPenalty(string start, string end)
         {
             bool illegal = false;
             foreach(var kvp in SysConfig.illegalHops)
@@ -43,6 +42,33 @@ namespace blueCow.Lib
                 }
             }
             return illegal ? _illegalHopePenalty : 0;
+        }
+
+        public long ContinentViolation(Individual ind, DatabaseHelper dbh)
+        {
+            Dictionary<string, int> numVisits = new Dictionary<string, int>();
+            Dictionary<string, string> contCodes = dbh.GetContinentCodes();
+            foreach(var c in SysConfig.majorContinents)
+            {
+                numVisits.Add(c, 0);
+            }
+            foreach(var c in ind.TravelOrder)
+            {
+                numVisits[dbh.GetContinentCode(c)]++;
+                if (contCodes.ContainsKey(c + "_D"))
+                {
+                    numVisits[dbh.GetContinentCode(c+"_D")]++;
+                }
+            }
+            long violation = 0;
+            foreach(var kvp in numVisits)
+            {
+                if(kvp.Value < SysConfig.minCountriesPerContinent)
+                {
+                    violation += (SysConfig.minCountriesPerContinent - kvp.Value) * _continentPenalty;
+                }
+            }
+            return violation;
         }
     }
 }
