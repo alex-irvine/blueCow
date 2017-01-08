@@ -10,8 +10,8 @@ namespace blueCow.Lib
     class ConstraintHandler
     {
         private int _illegalHopePenalty = 100000000;
-        private int _hopDistPenalty = 10000;
-        private int _totalDistPenalty = 10000;
+        private int _hopDistPenalty = 100000;
+        private int _totalDistPenalty = 100000;
         private int _continentPenalty = 100000000;
 
         public ConstraintHandler()

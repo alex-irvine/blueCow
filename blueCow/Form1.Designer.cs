@@ -28,12 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.button1 = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -57,6 +58,7 @@
             this.button9 = new System.Windows.Forms.Button();
             this.numericUpDown4 = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.numericUpDown6 = new System.Windows.Forms.NumericUpDown();
@@ -81,6 +83,16 @@
             this.label15 = new System.Windows.Forms.Label();
             this.listBox5 = new System.Windows.Forms.ListBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.label16 = new System.Windows.Forms.Label();
+            this.listBox8 = new System.Windows.Forms.ListBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
+            this.listBox9 = new System.Windows.Forms.ListBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.numericUpDown7 = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -91,6 +103,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -160,15 +175,15 @@
             // 
             this.listBox6.FormattingEnabled = true;
             this.listBox6.HorizontalScrollbar = true;
-            this.listBox6.Location = new System.Drawing.Point(462, 500);
+            this.listBox6.Location = new System.Drawing.Point(16, 129);
             this.listBox6.Name = "listBox6";
-            this.listBox6.Size = new System.Drawing.Size(198, 290);
+            this.listBox6.Size = new System.Drawing.Size(198, 134);
             this.listBox6.TabIndex = 17;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(459, 484);
+            this.label7.Location = new System.Drawing.Point(13, 109);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(111, 13);
             this.label7.TabIndex = 18;
@@ -178,15 +193,15 @@
             // 
             this.listBox7.FormattingEnabled = true;
             this.listBox7.HorizontalScrollbar = true;
-            this.listBox7.Location = new System.Drawing.Point(686, 500);
+            this.listBox7.Location = new System.Drawing.Point(240, 129);
             this.listBox7.Name = "listBox7";
-            this.listBox7.Size = new System.Drawing.Size(198, 290);
+            this.listBox7.Size = new System.Drawing.Size(198, 134);
             this.listBox7.TabIndex = 19;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(683, 484);
+            this.label8.Location = new System.Drawing.Point(237, 109);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(77, 13);
             this.label8.TabIndex = 20;
@@ -210,7 +225,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(459, 261);
+            this.label9.Location = new System.Drawing.Point(459, 233);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(80, 13);
             this.label9.TabIndex = 26;
@@ -218,14 +233,14 @@
             // 
             // progressBar2
             // 
-            this.progressBar2.Location = new System.Drawing.Point(281, 258);
+            this.progressBar2.Location = new System.Drawing.Point(298, 80);
             this.progressBar2.Name = "progressBar2";
             this.progressBar2.Size = new System.Drawing.Size(141, 23);
             this.progressBar2.TabIndex = 29;
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(155, 231);
+            this.numericUpDown3.Location = new System.Drawing.Point(172, 53);
             this.numericUpDown3.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -237,7 +252,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(281, 229);
+            this.button8.Location = new System.Drawing.Point(298, 51);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(141, 23);
             this.button8.TabIndex = 27;
@@ -262,11 +277,11 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(281, 162);
+            this.button9.Location = new System.Drawing.Point(281, 133);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(141, 23);
             this.button9.TabIndex = 31;
-            this.button9.Text = "Init Pop (Matrix)";
+            this.button9.Text = "Init Pop Quick";
             this.button9.UseVisualStyleBackColor = true;
             this.button9.Click += new System.EventHandler(this.button9_Click);
             // 
@@ -284,12 +299,15 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label19);
+            this.groupBox1.Controls.Add(this.numericUpDown7);
+            this.groupBox1.Controls.Add(this.button5);
+            this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.button4);
             this.groupBox1.Controls.Add(this.numericUpDown6);
             this.groupBox1.Controls.Add(this.progressBar4);
             this.groupBox1.Controls.Add(this.progressBar1);
-            this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.comboBox1);
             this.groupBox1.Controls.Add(this.label12);
@@ -301,11 +319,8 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.button7);
             this.groupBox1.Controls.Add(this.numericUpDown4);
-            this.groupBox1.Controls.Add(this.button8);
             this.groupBox1.Controls.Add(this.button9);
-            this.groupBox1.Controls.Add(this.numericUpDown3);
             this.groupBox1.Controls.Add(this.progressBar3);
-            this.groupBox1.Controls.Add(this.progressBar2);
             this.groupBox1.Location = new System.Drawing.Point(12, 277);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(428, 513);
@@ -313,10 +328,20 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tour Optimisation";
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(281, 162);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(141, 23);
+            this.button3.TabIndex = 49;
+            this.button3.Text = "Init Pop Diverse";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(49, 454);
+            this.label6.Location = new System.Drawing.Point(49, 301);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(75, 13);
             this.label6.TabIndex = 48;
@@ -324,7 +349,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(281, 449);
+            this.button4.Location = new System.Drawing.Point(281, 296);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(141, 23);
             this.button4.TabIndex = 45;
@@ -334,7 +359,7 @@
             // 
             // numericUpDown6
             // 
-            this.numericUpDown6.Location = new System.Drawing.Point(155, 451);
+            this.numericUpDown6.Location = new System.Drawing.Point(155, 298);
             this.numericUpDown6.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -346,7 +371,7 @@
             // 
             // progressBar4
             // 
-            this.progressBar4.Location = new System.Drawing.Point(281, 478);
+            this.progressBar4.Location = new System.Drawing.Point(281, 325);
             this.progressBar4.Name = "progressBar4";
             this.progressBar4.Size = new System.Drawing.Size(141, 23);
             this.progressBar4.TabIndex = 47;
@@ -362,7 +387,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(49, 234);
+            this.label14.Location = new System.Drawing.Point(66, 56);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(75, 13);
             this.label14.TabIndex = 43;
@@ -371,7 +396,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(49, 167);
+            this.label13.Location = new System.Drawing.Point(49, 272);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(90, 13);
             this.label13.TabIndex = 42;
@@ -383,7 +408,7 @@
             this.comboBox1.Items.AddRange(new object[] {
             "roulette",
             "tournament"});
-            this.comboBox1.Location = new System.Drawing.Point(155, 164);
+            this.comboBox1.Location = new System.Drawing.Point(155, 269);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(120, 21);
             this.comboBox1.TabIndex = 41;
@@ -452,17 +477,17 @@
             // 
             // chart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.chart1.ChartAreas.Add(chartArea3);
-            legend3.Name = "Legend1";
-            this.chart1.Legends.Add(legend3);
-            this.chart1.Location = new System.Drawing.Point(1007, 500);
+            chartArea1.Name = "ChartArea1";
+            this.chart1.ChartAreas.Add(chartArea1);
+            legend1.Name = "Legend1";
+            this.chart1.Legends.Add(legend1);
+            this.chart1.Location = new System.Drawing.Point(932, 500);
             this.chart1.Name = "chart1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series3.Legend = "Legend1";
-            series3.Name = "Series2";
-            this.chart1.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series1.Legend = "Legend1";
+            series1.Name = "Series2";
+            this.chart1.Series.Add(series1);
             this.chart1.Size = new System.Drawing.Size(690, 290);
             this.chart1.TabIndex = 34;
             this.chart1.Text = "Convergence Trend";
@@ -497,17 +522,17 @@
             // 
             // chart2
             // 
-            chartArea4.Name = "ChartArea1";
-            this.chart2.ChartAreas.Add(chartArea4);
-            legend4.Name = "Legend1";
-            this.chart2.Legends.Add(legend4);
-            this.chart2.Location = new System.Drawing.Point(1007, 29);
+            chartArea2.Name = "ChartArea1";
+            this.chart2.ChartAreas.Add(chartArea2);
+            legend2.Name = "Legend1";
+            this.chart2.Legends.Add(legend2);
+            this.chart2.Location = new System.Drawing.Point(932, 29);
             this.chart2.Name = "chart2";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series4.Legend = "Legend1";
-            series4.Name = "Series2";
-            this.chart2.Series.Add(series4);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series2.Legend = "Legend1";
+            series2.Name = "Series2";
+            this.chart2.Series.Add(series2);
             this.chart2.Size = new System.Drawing.Size(690, 290);
             this.chart2.TabIndex = 38;
             this.chart2.Text = "Convergence Trend";
@@ -522,7 +547,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(683, 261);
+            this.label15.Location = new System.Drawing.Point(683, 233);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(62, 13);
             this.label15.TabIndex = 40;
@@ -532,24 +557,24 @@
             // 
             this.listBox5.FormattingEnabled = true;
             this.listBox5.HorizontalScrollbar = true;
-            this.listBox5.Location = new System.Drawing.Point(686, 277);
+            this.listBox5.Location = new System.Drawing.Point(686, 249);
             this.listBox5.Name = "listBox5";
-            this.listBox5.Size = new System.Drawing.Size(198, 199);
+            this.listBox5.Size = new System.Drawing.Size(198, 121);
             this.listBox5.TabIndex = 39;
             // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
-            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
+            this.dataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
             this.dataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
             this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.dataGridView1.ColumnHeadersHeight = 4;
             this.dataGridView1.ColumnHeadersVisible = false;
             this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dataGridView1.Location = new System.Drawing.Point(462, 277);
+            this.dataGridView1.Location = new System.Drawing.Point(462, 249);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
@@ -558,14 +583,133 @@
             this.dataGridView1.ShowCellToolTips = false;
             this.dataGridView1.ShowEditingIcon = false;
             this.dataGridView1.ShowRowErrors = false;
-            this.dataGridView1.Size = new System.Drawing.Size(198, 199);
+            this.dataGridView1.Size = new System.Drawing.Size(198, 208);
             this.dataGridView1.TabIndex = 41;
+            // 
+            // dataGridView2
+            // 
+            this.dataGridView2.AllowUserToAddRows = false;
+            this.dataGridView2.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
+            this.dataGridView2.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView2.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCellsExceptHeader;
+            this.dataGridView2.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCellsExceptHeaders;
+            this.dataGridView2.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.dataGridView2.ColumnHeadersHeight = 4;
+            this.dataGridView2.ColumnHeadersVisible = false;
+            this.dataGridView2.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dataGridView2.Location = new System.Drawing.Point(932, 353);
+            this.dataGridView2.Name = "dataGridView2";
+            this.dataGridView2.ReadOnly = true;
+            this.dataGridView2.RowHeadersVisible = false;
+            this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dataGridView2.ShowCellErrors = false;
+            this.dataGridView2.ShowCellToolTips = false;
+            this.dataGridView2.ShowEditingIcon = false;
+            this.dataGridView2.ShowRowErrors = false;
+            this.dataGridView2.Size = new System.Drawing.Size(690, 138);
+            this.dataGridView2.TabIndex = 42;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(929, 338);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(85, 13);
+            this.label16.TabIndex = 43;
+            this.label16.Text = "Population Cities";
+            // 
+            // listBox8
+            // 
+            this.listBox8.FormattingEnabled = true;
+            this.listBox8.HorizontalScrollbar = true;
+            this.listBox8.Location = new System.Drawing.Point(1627, 354);
+            this.listBox8.Name = "listBox8";
+            this.listBox8.Size = new System.Drawing.Size(108, 43);
+            this.listBox8.TabIndex = 44;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(1624, 338);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(99, 13);
+            this.label17.TabIndex = 45;
+            this.label17.Text = "Num Cities Mapped";
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(281, 354);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(141, 23);
+            this.button5.TabIndex = 50;
+            this.button5.Text = "Show Values";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // listBox9
+            // 
+            this.listBox9.FormattingEnabled = true;
+            this.listBox9.HorizontalScrollbar = true;
+            this.listBox9.Location = new System.Drawing.Point(686, 388);
+            this.listBox9.Name = "listBox9";
+            this.listBox9.Size = new System.Drawing.Size(198, 69);
+            this.listBox9.TabIndex = 46;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(683, 373);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(98, 13);
+            this.label18.TabIndex = 47;
+            this.label18.Text = "Best By Generation";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label14);
+            this.groupBox2.Controls.Add(this.progressBar2);
+            this.groupBox2.Controls.Add(this.numericUpDown3);
+            this.groupBox2.Controls.Add(this.listBox6);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.button8);
+            this.groupBox2.Controls.Add(this.listBox7);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Location = new System.Drawing.Point(462, 500);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(456, 290);
+            this.groupBox2.TabIndex = 48;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Tour Optimisation Illustration (Init pop with 1 member and 0 tour optimisations)";
+            // 
+            // numericUpDown7
+            // 
+            this.numericUpDown7.Location = new System.Drawing.Point(155, 165);
+            this.numericUpDown7.Name = "numericUpDown7";
+            this.numericUpDown7.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown7.TabIndex = 51;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(49, 167);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(94, 13);
+            this.label19.TabIndex = 52;
+            this.label19.Text = "Tour Optimisations";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1768, 877);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.listBox9);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.listBox8);
+            this.Controls.Add(this.dataGridView2);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.listBox5);
@@ -576,10 +720,6 @@
             this.Controls.Add(this.chart1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.label8);
-            this.Controls.Add(this.listBox7);
-            this.Controls.Add(this.label7);
-            this.Controls.Add(this.listBox6);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.listBox3);
             this.Controls.Add(this.listBox2);
@@ -600,6 +740,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chart2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown7)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -653,6 +797,17 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.ListBox listBox5;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ListBox listBox8;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.ListBox listBox9;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.NumericUpDown numericUpDown7;
     }
 }
 

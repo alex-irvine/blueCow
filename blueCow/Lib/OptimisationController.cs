@@ -46,6 +46,31 @@ namespace blueCow.Lib
             return _ga.EvaluatePopulation(new ObjectiveFunction().Evaluate, dbh);
         }
 
+        public List<Individual> InitialiseDiversePopulation(int popSize, DatabaseHelper dbh, ProgressBar progBar = null)
+        {
+            var population = _ga.GenerateDiversePopulation(popSize, dbh);
+            // optimise tours and set tour constraint and get best tour
+            for (int i = 0; i < population.Count; i++)
+            {
+                for (int j = 0; j < SysConfig.maxTourGenerations; j++)
+                {
+                    population[i] = OptimiseTour(population[i], SysConfig.selectionMethod, dbh);
+                    if (population[i].TourViolation == 0)
+                    {
+                        break;
+                    }
+                }
+                // set continent constraint
+                population[i].ContinentViolation = new ConstraintHandler().ContinentViolation(population[i], dbh);
+                if (progBar != null)
+                {
+                    progBar.Value = i + 1;
+                }
+            }
+            _ga.SetPopulation(population);
+            return _ga.EvaluatePopulation(new ObjectiveFunction().Evaluate, dbh);
+        }
+
         // just one run (put in a loop)
         public Individual OptimiseTour(Individual ind, string selectionMethod, DatabaseHelper dbh, int tournamentSize = 5)
         {
@@ -95,17 +120,17 @@ namespace blueCow.Lib
             return ind;
         }
 
-        public List<Individual> OptimiseBidsWithConstraints(List<Individual> inds, DatabaseHelper dbh)
+        public List<Individual> OptimiseBidsWithConstraints(List<Individual> inds, DatabaseHelper dbh, string selectionMethod, int tournamentSize = 5)
         {
             // pop should be created and initially evaluated (List<Individual>)
             // just one run (put in loop)
             int numCrossovers = Convert.ToInt32(Math.Round((SysConfig.crossOverRate / 100) * inds.Count));
-            List<Individual> newInds = new List<Individual>();
+            List<Individual> newPop = new List<Individual>();
             for (int i = 0; i < numCrossovers; i++)
             {
                 // get two parents using roulette or tournament
-                Individual parent1 = _ga.RouletteSelectBids(inds);
-                Individual parent2 = _ga.RouletteSelectBids(inds);
+                Individual parent1 = selectionMethod == "roulette" ? _ga.RouletteSelectBids(inds) : _ga.TournamentSelectBids(inds, tournamentSize);
+                Individual parent2 = selectionMethod == "roulette" ? _ga.RouletteSelectBids(inds) : _ga.TournamentSelectBids(inds, tournamentSize);
                 Individual child1 = new Individual()
                 {
                     Cities = _ga.CrossoverBids(parent1.Cities, parent2.Cities)
@@ -146,13 +171,13 @@ namespace blueCow.Lib
                 // evaluate constrained objective
                 child1.ObjectiveValue = _obj.Evaluate(child1, dbh);
                 // if child better than either parent add to new pop
-                if (child1.ObjectiveValue < parent1.ObjectiveValue || child1.ObjectiveValue < parent2.ObjectiveValue)
+                if (child1.ObjectiveValue > parent1.ObjectiveValue || child1.ObjectiveValue > parent2.ObjectiveValue)
                 {
-                    newInds.Add(child1);
+                    //replace worst parent
+                    newPop = parent1.ObjectiveValue < parent2.ObjectiveValue ?
+                        _ga.ReplaceParent(parent1, child1) : _ga.ReplaceParent(parent2, child1);
                 }
             }
-            // replace tours
-            List<Individual> newPop = _ga.ReplaceWorstBids(inds,newInds);
             // return new population
             return newPop;
         }

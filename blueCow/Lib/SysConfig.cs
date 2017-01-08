@@ -18,11 +18,11 @@ namespace blueCow.Lib
         //public static readonly string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\S14003221\Desktop\blueCow\blueCow\App_Data\Distances.mdf;Integrated Security=True";
         public static int minBid = 100000;
         public static int maxBid = 10000000;
-        public static int minCities = 30;
-        public static int maxCities = 50;
+        public static int minCities = 20;
+        public static int maxCities = 60;
         public static int maxTotalDist = 300000;
         public static int minTotalDist = 100000;
-        public static int maxHopDist = 10000;
+        public static int maxHopDist = 8000;
         public static int minHopDist = 1000;
         public static Dictionary<string, string> illegalHops = new Dictionary<string, string>()
         {
@@ -33,9 +33,11 @@ namespace blueCow.Lib
             { "TOG", "CRO" }
         };
         public static double crossOverRate = 80;
+        public static int crossoverPoints = 3;
         public static int mutationRate = 5;
         public static int tourPopSize = 50;
         public static string selectionMethod = "roulette";
+        public static int stepSize = 10;
         public static List<string> majorContinents = new List<string>()
         {
             "AS",

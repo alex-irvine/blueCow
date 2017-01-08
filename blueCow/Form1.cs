@@ -45,10 +45,21 @@ namespace blueCow
             List<Individual> inds = _ga.EvaluatePopulation(obj.Evaluate,_dbh);
             listBox3.Items.Clear();
             listBox4.Items.Clear();
-            foreach(var i in inds)
+            dataGridView2.Rows.Clear();
+            dataGridView2.ColumnCount = SysConfig.chromeLength;
+            for(var i=0; i < inds.Count; i++)
             {
-                listBox3.Items.Add(i.ObjectiveValue.ToString());
-                listBox4.Items.Add("Tour: " + i.TourViolation.ToString() + " Continent: " + i.ContinentViolation.ToString());
+                listBox3.Items.Add(inds[i].ObjectiveValue.ToString());
+                listBox4.Items.Add("Tour: " + inds[i].TourViolation.ToString() + " Continent: " + inds[i].ContinentViolation.ToString());
+                var row = new DataGridViewRow();
+                for(int j = 0; j < inds[i].Cities.Length; j++)
+                {
+                    row.Cells.Add(new DataGridViewTextBoxCell()
+                    {
+                        Value = Convert.ToInt16(inds[i].Cities[j])
+                    });
+                }
+                dataGridView2.Rows.Add(row);
             }
             var best = _ga.GetFittestIndividual();
             listBox5.Items.Clear();
@@ -61,6 +72,7 @@ namespace blueCow
             listBox5.Items.Add("Fitness: " + best.ObjectiveValue);
             listBox5.Items.Add("Tour Violation: " + best.TourViolation);
             listBox5.Items.Add("Continent Violation: " + best.ContinentViolation);
+            listBox5.Items.Add("Num cities: " + best.CountriesVisited);
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -88,6 +100,7 @@ namespace blueCow
         private void button8_Click(object sender, EventArgs e)
         {
             SysConfig.selectionMethod = comboBox1.Text;
+            progressBar2.Maximum = Convert.ToInt32(numericUpDown3.Value);
             backgroundWorker2.RunWorkerAsync(chart1);
         }
 
@@ -100,7 +113,7 @@ namespace blueCow
             for (int j = 0; j < numericUpDown3.Value; j++)
             {
                 ind = _opt.OptimiseTour(ind, SysConfig.selectionMethod, _dbh);
-                backgroundWorker2.ReportProgress((j + 1 / Convert.ToInt32(numericUpDown3.Value)) * 100);
+                backgroundWorker2.ReportProgress((j + 1 ));
             }
         }
 
@@ -112,18 +125,18 @@ namespace blueCow
             listBox7.Items.Clear();
             listBox6.Items.Clear();
             List<Tour> tours = _ga.GetPopulation()[0].TourPopulation;
-            foreach (var i in tours)
+            for(var i=0;i<tours.Count;i++)
             {
                 string cities = "";
-                foreach (var s in i.TravelOrder)
+                foreach (var s in tours[i].TravelOrder)
                 {
                     cities += s + ", ";
                 }
                 listBox6.Items.Add(cities);
             }
-            foreach (var t in tours)
+            for(var t=0;t<tours.Count;t++)
             {
-                listBox7.Items.Add(t.Violation);
+                listBox7.Items.Add(tours[t].Violation);
             }
         }
 
@@ -132,12 +145,16 @@ namespace blueCow
             SysConfig.tourPopSize = Convert.ToInt32(numericUpDown1.Value);
             SysConfig.crossOverRate = Convert.ToInt32(numericUpDown2.Value);
             SysConfig.mutationRate = Convert.ToInt32(numericUpDown5.Value);
+            SysConfig.maxTourGenerations = Convert.ToInt32(numericUpDown7);
             progressBar1.Maximum = Convert.ToInt32(numericUpDown4.Value);
             List<Individual> inds = _opt.InitialisePopulation(Convert.ToInt32(numericUpDown4.Value), _dbh,progressBar1);
             chart1.Series[0].Points.Clear();
             chart1.ChartAreas[0].AxisX.Minimum = 0;
-            chart1.Series[0].Points.AddXY(0, ((Tour)_ga.GetFittestTour(_ga.GetPopulation()[0].TourPopulation)).Violation);
+            chart2.ChartAreas[0].AxisY.IsStartedFromZero = false;
+            chart2.ChartAreas[0].AxisY.Minimum = _ga.GetFittestIndividual().ObjectiveValue;
+            chart1.Series[0].Points.AddXY(0, (_ga.GetFittestTour(_ga.GetPopulation()[0].TourPopulation)).Violation);
             listBox2.Items.Clear();
+            listBox9.Items.Clear();
             Dictionary<string, int> bids = _dbh.GetBids();
             foreach (var i in inds)
             {
@@ -163,6 +180,7 @@ namespace blueCow
 
         private void button4_Click(object sender, EventArgs e)
         {
+            SysConfig.selectionMethod = comboBox1.Text;
             chart2.ChartAreas[0].AxisX.Minimum = 0;
             progressBar4.Maximum = Convert.ToInt32(numericUpDown6.Value);
             backgroundWorker3.RunWorkerAsync(chart2);
@@ -174,7 +192,7 @@ namespace blueCow
             var chart = (Chart)e.Argument;
             for (int j = 0; j < numericUpDown6.Value; j++)
             {
-                _opt.OptimiseBidsWithConstraints(_ga.GetPopulation(), _dbh);
+                _opt.OptimiseBidsWithConstraints(_ga.GetPopulation(), _dbh,SysConfig.selectionMethod);
                 backgroundWorker3.ReportProgress(j + 1);
             }
         }
@@ -186,21 +204,64 @@ namespace blueCow
                 _ga.GetFittestIndividual().ObjectiveValue);
             listBox2.Items.Clear();
             List < Individual> pop = _ga.GetPopulation();
-            foreach (var i in pop)
+            for(var i = 0; i < pop.Count; i++)
             {
                 string cities = "";
-                foreach (var s in i.TravelOrder)
+                foreach (var s in pop[i].TravelOrder)
                 {
                     cities += s + ", ";
                 }
                 listBox2.Items.Add(cities);
-                ShowEvaluations();
             }
+            Individual best = _ga.GetFittestIndividual();
+            listBox9.Items.Add("Generation " + e.ProgressPercentage + ": " + best.ObjectiveValue.ToString());
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            SysConfig.tourPopSize = Convert.ToInt32(numericUpDown1.Value);
+            SysConfig.crossOverRate = Convert.ToInt32(numericUpDown2.Value);
+            SysConfig.mutationRate = Convert.ToInt32(numericUpDown5.Value);
+            SysConfig.maxTourGenerations = Convert.ToInt32(numericUpDown7.Value);
+            progressBar1.Maximum = Convert.ToInt32(numericUpDown4.Value);
+            List<Individual> inds = _opt.InitialiseDiversePopulation(Convert.ToInt32(numericUpDown4.Value), _dbh, progressBar1);
+            chart1.Series[0].Points.Clear();
+            chart1.ChartAreas[0].AxisX.Minimum = 0;
+            chart2.ChartAreas[0].AxisY.IsStartedFromZero = false;
+            chart2.ChartAreas[0].AxisY.Minimum = _ga.GetFittestIndividual().ObjectiveValue;
+            chart1.Series[0].Points.AddXY(0, ((Tour)_ga.GetFittestTour(_ga.GetPopulation()[0].TourPopulation)).Violation);
+            listBox2.Items.Clear();
+            listBox9.Items.Clear();
+            Dictionary<string, int> bids = _dbh.GetBids();
+            foreach (var i in inds)
+            {
+                string cities = "";
+                foreach (var c in i.TravelOrder)
+                {
+                    cities += c + ", ";
+                }
+                listBox2.Items.Add(cities);
+            }
+            ShowEvaluations();
+            bool[] visited = new bool[SysConfig.chromeLength];
+            foreach (var i in inds)
+            {
+                for (var c = 0; c < i.Cities.Length; c++)
+                {
+                    if (i.Cities[c])
+                    {
+                        visited[c] = true;
+                    }
+                }
+            }
+            int citiesMapped = visited.Where(x => x == true).Count();
+            listBox8.Items.Clear();
+            listBox8.Items.Add(citiesMapped);
+        }
 
+        private void button5_Click(object sender, EventArgs e)
+        {
+            ShowEvaluations();
         }
     }
 }
