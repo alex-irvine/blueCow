@@ -145,7 +145,7 @@ namespace blueCow
             SysConfig.tourPopSize = Convert.ToInt32(numericUpDown1.Value);
             SysConfig.crossOverRate = Convert.ToInt32(numericUpDown2.Value);
             SysConfig.mutationRate = Convert.ToInt32(numericUpDown5.Value);
-            SysConfig.maxTourGenerations = Convert.ToInt32(numericUpDown7);
+            SysConfig.maxTourGenerations = Convert.ToInt32(numericUpDown7.Value);
             progressBar1.Maximum = Convert.ToInt32(numericUpDown4.Value);
             List<Individual> inds = _opt.InitialisePopulation(Convert.ToInt32(numericUpDown4.Value), _dbh,progressBar1);
             chart1.Series[0].Points.Clear();

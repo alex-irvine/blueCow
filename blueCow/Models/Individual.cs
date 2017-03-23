@@ -48,13 +48,13 @@ namespace blueCow.Models
                 }
             }
             // shuffle the initial order to expose new patterns
-            this.TravelOrder.Shuffle();
+            this.TravelOrder.Shuffle(rand);
             // create tour population
             this.TourPopulation = new List<Tour>();
             for (int i = 0; i < SysConfig.tourPopSize; i++)
             {
                 List<string> randomTour = (List<string>)this.TravelOrder.Clone();
-                randomTour.Shuffle();
+                randomTour.Shuffle(rand);
                 long violation = new ObjectiveFunction().TourViolation(randomTour, dbh);
                 this.TourPopulation.Add(new Tour() { TravelOrder = randomTour, Violation = violation });
             }
@@ -85,6 +85,28 @@ namespace blueCow.Models
             {
                 List<string> randomTour = (List<string>)this.TravelOrder.Clone();
                 randomTour.Shuffle();
+                long violation = new ObjectiveFunction().TourViolation(randomTour, dbh);
+                this.TourPopulation.Add(new Tour() { TravelOrder = randomTour, Violation = violation });
+            }
+        }
+
+        public void GenerateTours(DatabaseHelper dbh, Random rand)
+        {
+            // get list of city codes for travel order
+            Dictionary<string, int> bids = dbh.GetCountryCodeIndexes();
+            for (var i = 0; i < this.Cities.Length; i++)
+            {
+                if (this.Cities[i])
+                {
+                    this.TravelOrder.Add(bids.Keys.ElementAt(i));
+                }
+            }
+            // create tour population
+            this.TourPopulation = new List<Tour>();
+            for (int i = 0; i < SysConfig.tourPopSize; i++)
+            {
+                List<string> randomTour = (List<string>)this.TravelOrder.Clone();
+                randomTour.Shuffle(rand);
                 long violation = new ObjectiveFunction().TourViolation(randomTour, dbh);
                 this.TourPopulation.Add(new Tour() { TravelOrder = randomTour, Violation = violation });
             }

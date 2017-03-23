@@ -83,7 +83,7 @@ namespace blueCow.Lib
                 // get two parents using roulette or tournament
                 Tour parent1 = selectionMethod == "roulette" ? _ga.RouletteSelectTour(ind.TourPopulation) :
                     _ga.TournamentSelectionTour(ind.TourPopulation, tournamentSize);
-                Tour parent2 = selectionMethod == "roulette" ? _ga.RouletteSelectTour(ind.TourPopulation) :
+                Tour parent2 = selectionMethod == "roulette" ? _ga.RouletteSelectTour(ind.TourPopulation, parent1) :
                     _ga.TournamentSelectionTour(ind.TourPopulation, tournamentSize);
                 Tour child1 = new Tour()
                 {
@@ -99,11 +99,19 @@ namespace blueCow.Lib
                     child1.TravelOrder = _ga.MutateTravelOrder(child1.TravelOrder);
                     //child2.TravelOrder = _ga.MutateTravelOrder(child2.TravelOrder);
                 }
-                // if child better than either parent add to new pop
+                // if child better than either parent replace 
                 child1.Violation = _ga.EvaluateTourViolation(_obj.TourViolation, child1.TravelOrder, dbh);
                 if (child1.Violation < parent1.Violation || child1.Violation < parent2.Violation)
                 {
-                    newTours.Add(child1);
+                    if (SysConfig.replacementMethod == "child to parent")
+                    {
+                        ind.TourPopulation = parent1.Violation > parent2.Violation ?
+                        _ga.ReplaceParentTour(ind.TourPopulation, parent1, child1) : _ga.ReplaceParentTour(ind.TourPopulation, parent2, child1);
+                    }
+                    else
+                    {
+                        newTours.Add(child1);
+                    }
                 }
                 //child2.Violation = _ga.EvaluateTourViolation(_obj.TourViolation, child2.TravelOrder, dbh);
                 //if (child2.Violation < parent1.Violation || child2.Violation < parent2.Violation)
@@ -112,7 +120,10 @@ namespace blueCow.Lib
                 //}
             }
             // replace tours
-            ind = _ga.ReplaceWorstTours(ind, newTours);
+            if (SysConfig.replacementMethod != "child to parent")
+            {
+                ind = _ga.ReplaceWorstTours(ind, newTours);
+            }
             // set best tour in individual
             Tour bestTour = _ga.GetFittestTour(ind.TourPopulation);
             ind.TravelOrder = bestTour.TravelOrder;
@@ -130,7 +141,7 @@ namespace blueCow.Lib
             {
                 // get two parents using roulette or tournament
                 Individual parent1 = selectionMethod == "roulette" ? _ga.RouletteSelectBids(inds) : _ga.TournamentSelectBids(inds, tournamentSize);
-                Individual parent2 = selectionMethod == "roulette" ? _ga.RouletteSelectBids(inds) : _ga.TournamentSelectBids(inds, tournamentSize);
+                Individual parent2 = selectionMethod == "roulette" ? _ga.RouletteSelectBids(inds, parent1) : _ga.TournamentSelectBids(inds, tournamentSize);
                 Individual child1 = new Individual()
                 {
                     Cities = _ga.CrossoverBids(parent1.Cities, parent2.Cities)
@@ -155,7 +166,7 @@ namespace blueCow.Lib
                     continue;
                 }
                 child1.CountriesVisited = numCities;
-                child1.GenerateTours(dbh);
+                child1.GenerateTours(dbh,_rand);
                 // evaluate child
                 // optimise tour first
                 for(int j = 0; j < SysConfig.maxTourGenerations; j++)
@@ -174,12 +185,26 @@ namespace blueCow.Lib
                 if (child1.ObjectiveValue > parent1.ObjectiveValue || child1.ObjectiveValue > parent2.ObjectiveValue)
                 {
                     //replace worst parent
-                    newPop = parent1.ObjectiveValue < parent2.ObjectiveValue ?
+                    if (SysConfig.replacementMethod == "child to parent")
+                    {
+                        newPop = parent1.ObjectiveValue < parent2.ObjectiveValue ?
                         _ga.ReplaceParent(parent1, child1) : _ga.ReplaceParent(parent2, child1);
+                    }
+                    else
+                    {
+                        newPop.Add(child1);
+                    }
                 }
             }
             // return new population
-            return newPop;
+            if (SysConfig.replacementMethod == "child to parent")
+            {
+                return newPop;
+            }
+            else
+            {
+                return _ga.ReplaceWorstBids(inds, newPop);
+            }            
         }
     }
 }

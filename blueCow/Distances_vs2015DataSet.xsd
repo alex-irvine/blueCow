@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Distances_vs2015DataSet" targetNamespace="http://tempuri.org/Distances_vs2015DataSet.xsd" xmlns:mstns="http://tempuri.org/Distances_vs2015DataSet.xsd" xmlns="http://tempuri.org/Distances_vs2015DataSet.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="1" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="Distances_vs2015ConnectionString" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Distances_vs2015ConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.blueCow.Properties.Settings.GlobalReference.Default.Distances_vs2015ConnectionString" Provider="System.Data.SqlClient" />
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="Distances_vs2015ConnectionString1" ConnectionStringObject="" IsAppSettingsProperty="true" Modifier="Assembly" Name="Distances_vs2015ConnectionString1 (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.blueCow.Properties.Settings.GlobalReference.Default.Distances_vs2015ConnectionString1" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables>
+          <TableAdapter BaseClass="System.ComponentModel.Component" DataAccessorModifier="AutoLayout, AnsiClass, Class, Public" DataAccessorName="continentsTableAdapter" GeneratorDataComponentClassName="continentsTableAdapter" Name="continents" UserDataComponentName="continentsTableAdapter">
+            <MainSource>
+              <DbSource ConnectionRef="Distances_vs2015ConnectionString (Settings)" DbObjectName="dbo.Distances" DbObjectType="Table" FillMethodModifier="Public" FillMethodName="Fill" GenerateMethods="Both" GenerateShortCommands="false" GeneratorGetMethodName="GetData" GeneratorSourceName="Fill" GetMethodModifier="Public" GetMethodName="GetData" QueryType="Rowset" ScalarCallRetval="System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" UseOptimisticConcurrency="false" UserGetMethodName="GetData" UserSourceName="Fill">
+                <SelectCommand>
+                  <DbCommand CommandType="Text" ModifiedByUser="true">
+                    <CommandText>SELECT DISTINCT numa, ida 
+FROM            Distances order by ida asc</CommandText>
+                    <Parameters />
+                  </DbCommand>
+                </SelectCommand>
+              </DbSource>
+            </MainSource>
+            <Mappings>
+              <Mapping SourceColumn="numa" DataSetColumn="numa" />
+              <Mapping SourceColumn="ida" DataSetColumn="ida" />
+            </Mappings>
+            <Sources />
+          </TableAdapter>
+        </Tables>
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="Distances_vs2015DataSet" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="True" msprop:Generator_DataSetName="Distances_vs2015DataSet" msprop:Generator_UserDSName="Distances_vs2015DataSet">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="continents" msprop:Generator_TableClassName="continentsDataTable" msprop:Generator_TableVarName="tablecontinents" msprop:Generator_RowChangedName="continentsRowChanged" msprop:Generator_TablePropName="continents" msprop:Generator_RowDeletingName="continentsRowDeleting" msprop:Generator_RowChangingName="continentsRowChanging" msprop:Generator_RowEvHandlerName="continentsRowChangeEventHandler" msprop:Generator_RowDeletedName="continentsRowDeleted" msprop:Generator_RowClassName="continentsRow" msprop:Generator_UserTableName="continents" msprop:Generator_RowEvArgName="continentsRowChangeEvent">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="numa" msprop:Generator_ColumnVarNameInTable="columnnuma" msprop:Generator_ColumnPropNameInRow="numa" msprop:Generator_ColumnPropNameInTable="numaColumn" msprop:Generator_UserColumnName="numa" type="xs:int" minOccurs="0" />
+              <xs:element name="ida" msprop:Generator_ColumnVarNameInTable="columnida" msprop:Generator_ColumnPropNameInRow="ida" msprop:Generator_ColumnPropNameInTable="idaColumn" msprop:Generator_UserColumnName="ida" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="5" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
